@@ -74,7 +74,7 @@ class User(db.Model):
 
     messages = db.relationship('Message')
 
-    like = db.relationship('Message',
+    liked_messages = db.relationship('Message',
                            secondary='likes', backref='user_likes')
 
     followers = db.relationship(
@@ -182,10 +182,14 @@ class Like(db.Model):
     """Liked warbles message"""
 
     __tablename__ = 'likes'
+    __table_args__ = (db.UniqueConstraint("user_id", "message_id"),)
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     message_id = db.Column(db.Integer, db.ForeignKey('messages.id'))
+
+    user = db.relationship('User')
+    message = db.relationship("Message")
 
 
 

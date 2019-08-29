@@ -16,12 +16,7 @@
             <a href="/users/{{ user.id }}">@{{ user.username }}</a>
             <span class="text-muted">{{ message.timestamp.strftime('%d %B %Y') }}</span>
             <p>{{ message.text }}</p>
-
-            <form action="/users/{{user.id}}/likes" method="POST">
-              <input type="hidden" name="message_id" value="{{message.id}}">
-              <button class="btn like_btn btn-info"><i class="fas fa-thumbs-up"></i>
-              </button>
-            </form>
+          
           </div>
         </li>
 

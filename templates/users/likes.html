@@ -1,42 +1,27 @@
 {% extends 'users/detail.html' %}
 {% block user_details %}
-  <div class="col-sm-9">
-    <div class="row">
-
-      <!-- {% for followed_user in user.following %}
-
-        <div class="col-lg-4 col-md-6 col-12">
-          <div class="card user-card">
-            <div class="card-inner">
-              <div class="image-wrapper">
-                <img src="{{ followed_user.header_image_url }}" alt="" class="card-hero">
-              </div>
-              <div class="card-contents">
-                <a href="/users/{{ followed_user.id }}" class="card-link">
-                  <img src="{{ followed_user.image_url }}" alt="Image for {{ followed_user.username }}" class="card-image">
-                  <p>@{{ followed_user.username }}</p>
-                </a>
-                {% if g.user.is_following(followed_user) %}
-                  <form method="POST"
-                        action="/users/stop-following/{{ followed_user.id }}">
-                    <button class="btn btn-primary btn-sm">Unfollow</button>
-                  </form>
-                {% else %}
-                  <form method="POST" action="/users/follow/{{ followed_user.id }}">
-                    <button class="btn btn-outline-primary btn-sm">Follow</button>
-                  </form>
-                {% endif %}
-
-              </div>
-              <p class="card-bio">{{followed_user.bio}}</p>
-            </div>
-          </div>
+  <div class="col-lg-6 col-md-8 col-sm-12">
+    <ul class="list-group" id="messages">
+      {% for msg in liked_messages %}
+      <li class="list-group-item">
+        <!-- <a href="/messages/{{ msg.id  }}" class="message-link" /> -->
+        <a href="/users/{{ msg.message.user_id }}">
+          <img src="{{ msg.message.user.image_url }}" alt="" class="timeline-image">
+        </a>
+        <div class="message-area">
+          <a href="/users/{{ msg.message.user_id }}">@{{ msg.message.user.username }}</a>
+          <span class="text-muted">{{ msg.message.timestamp.strftime('%d %B %Y') }}</span>
+          <p>{{ msg.message.text }}</p>
+            <form action="/users/stop-like/{{msg.message.id}}" method="POST">
+              <input type="hidden" name="message_id" value="{{msg.message.id}}">
+              <button class="btn like_btn btn-info"><i class="fas fa-thumbs-up"></i>
+              </button>
+            </form>
         </div>
-
-      {% endfor %} -->
-
-      <p>"HELLO"</p>
-
-    </div>
+      </li>
+      {% endfor %}
+    </ul>
   </div>
+
+</div>
 {% endblock %}
