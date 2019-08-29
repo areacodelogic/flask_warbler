@@ -5,7 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
 from forms import UserAddForm, LoginForm, MessageForm, UpdateProfileForm
-from models import db, connect_db, User, Message
+from models import db, connect_db, User, Message, Like
 
 CURR_USER_KEY = "curr_user"
 
@@ -150,7 +150,6 @@ def users_show(user_id):
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    user = User.query.get_or_404(user_id)
     # snagging messages in order from the database;
     # user.messages won't be in order by default
     messages = (Message
@@ -159,7 +158,7 @@ def users_show(user_id):
                 .order_by(Message.timestamp.desc())
                 .limit(100)
                 .all())
-    return render_template('users/show.html', user=user, messages=messages)
+    return render_template('users/show.html', user=g.user, messages=messages)
 
 
 @app.route('/users/<int:user_id>/following')
@@ -215,10 +214,13 @@ def stop_following(follow_id):
 
     return redirect(f"/users/{g.user.id}/following")
 
+##########################################LIKES#####
+
+#######################################################
 
 @app.route('/users/<int:user_id>/likes', methods=['GET'])
 def get_likes(user_id):
-    """Display liked warbles""" 
+    """Display liked warbles"""
 
     if not g.user:
         flash("Access unauthorized.", "danger")
@@ -227,8 +229,33 @@ def get_likes(user_id):
     user = User.query.get_or_404(user_id)
     messages = g.user.likes.all()
     return render_template("/users/likes.html", user=user)
-    # message = Message.query.filter_by(id=message_id).first_or_404()
 
+
+@app.route('/users/<int:user_id>/likes', methods=['POST'])
+def post_likes(user_id):
+    """Display liked warbles"""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+        
+    message_id = request.form.get("message_id")
+    message = Message.query.get(message_id)
+    isMyMessage = message.user_id == g.user.id
+   
+
+    if not isMyMessage:
+        new_like = Like(
+            user_id=g.user.id,
+            message_id=message_id,
+        )
+
+        db.session.add(new_like)
+        db.session.commit()
+
+        return redirect("/users/profile")
+
+#######################################################
 
 
 @app.route('/users/profile', methods=["GET", "POST"])
@@ -257,7 +284,7 @@ def profile():
             return redirect(f"/users/{g.user.id}")
 
         else:
-            form.password.errors = ["Invalid Password"] 
+            form.password.errors = ["Invalid Password"]
             return render_template("/users/edit.html", form=form)
     else:
         return render_template("/users/edit.html", form=form)
@@ -341,7 +368,8 @@ def homepage():
     """
 
     if g.user:
-        followers_id = [follower.id for follower in g.user.following] + [g.user.id]
+        followers_id = [
+            follower.id for follower in g.user.following] + [g.user.id]
         messages = (Message
                     .query
                     .filter(Message.user_id.in_(followers_id))

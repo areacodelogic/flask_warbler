@@ -1,7 +1,16 @@
+
+.like_btn{
+  position: absolute;
+  z-index: 1;
+  right: 20px;
+  bottom: 6px;
+}
+
 /* ====================== General */
 
 body {
   background-color: #e6ecf0;
+
 }
 
 body.error-404 {
@@ -190,6 +199,7 @@ nav + .container {
 .message-area,
 .timeline-image {
   display: inline-block;
+  position: relative;
 }
 
 .message-area {
