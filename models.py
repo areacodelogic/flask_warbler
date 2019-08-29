@@ -74,6 +74,9 @@ class User(db.Model):
 
     messages = db.relationship('Message')
 
+    like = db.relationship('Message',
+                           secondary='likes', backref='user_likes')
+
     followers = db.relationship(
         "User",
         secondary="follows",
@@ -171,6 +174,19 @@ class Message(db.Model):
     )
 
     user = db.relationship('User')
+
+    like = db.relationship('Like')
+
+
+class Like(db.Model):
+    """Liked warbles message"""
+
+    __tablename__ = 'likes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    message_id = db.Column(db.Integer, db.ForeignKey('messages.id'))
+
 
 
 def connect_db(app):

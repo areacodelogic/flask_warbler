@@ -216,6 +216,21 @@ def stop_following(follow_id):
     return redirect(f"/users/{g.user.id}/following")
 
 
+@app.route('/users/<int:user_id>/likes', methods=['GET'])
+def get_likes(user_id):
+    """Display liked warbles""" 
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    user = User.query.get_or_404(user_id)
+    messages = g.user.likes.all()
+    return render_template("/users/likes.html", user=user)
+    # message = Message.query.filter_by(id=message_id).first_or_404()
+
+
+
 @app.route('/users/profile', methods=["GET", "POST"])
 def profile():
     """Update profile for current user."""
