@@ -39,7 +39,30 @@ class UserModelTestCase(TestCase):
         Message.query.delete()
         Follows.query.delete()
 
+        db.session.commit()
+
         self.client = app.test_client()
+
+        self.u1 = User.signup(username="test1",
+                       email="test1@test1.com",
+                       password="HASHED_PASSWORD",
+                       image_url=None)
+        self.u1.id = 1
+        db.session.add(self.u1)
+        db.session.commit()
+
+        self.u2 = User.signup(username="test2",
+                       email="test2@test2.com",
+                       password="HASHED_PASSWORD",
+                       image_url=None)
+        self.u2.id = 2
+        db.session.add(self.u2)
+        db.session.commit()
+
+        test_following = Follows(user_being_followed_id=self.u1.id, user_following_id=self.u2.id)
+
+        db.session.add(test_following)
+        db.session.commit()
 
     def test_user_model(self):
         """Does basic model work?"""
@@ -56,3 +79,16 @@ class UserModelTestCase(TestCase):
         # User should have no messages & no followers
         self.assertEqual(len(u.messages), 0)
         self.assertEqual(len(u.followers), 0)
+
+    def test_repr(self):
+        """Does repr work as expected?""" 
+        
+        self.assertEqual(repr(self.u1), '<User #1: test1, test1@test1.com>')
+
+    def test_is_following(self):
+        """Does is_following successfully detect when user1 is following user2?""" 
+        
+        user1 = User.query.get_or_404(1)
+        user2 = User.query.get_or_404(2)
+
+        self.assertEqual(user1.is_following(user2), True)
