@@ -1,4 +1,5 @@
 # Warbler
+![alt text](https://i.imgur.com/n3BB0gE.png)
 Live demo available here: [warbwarb](https://warbwarb.herokuapp.com/) 
 Please feel free to sign up a new account, or use the following test account. 
 ```
