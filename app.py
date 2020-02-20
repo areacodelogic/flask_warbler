@@ -417,7 +417,7 @@ def homepage():
         user = g.user
 
         likes = Like.query.all()
-        return render_template('home.html', messages=messages,                             user=user, likes=likes)
+        return render_template('home.html', messages=messages, user=user, likes=likes)
 
     else:
         return render_template('home-anon.html')
