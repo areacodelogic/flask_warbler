@@ -217,10 +217,6 @@ def stop_following(follow_id):
 
     return redirect(f"/users/{g.user.id}/following")
 
-##########################################LIKES#####
-
-#######################################################
-
 
 @app.route('/users/<int:user_id>/likes', methods=['GET'])
 def get_likes(user_id):
