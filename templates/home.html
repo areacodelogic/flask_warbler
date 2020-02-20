@@ -16,25 +16,25 @@
           <li class="stat">
             <p class="small">Messages</p>
             <h4>
-              <a href="/users/{{ g.user.id }}">{{
-                g.user.messages | length
-              }}</a>
+              <a href="/users/{{ g.user.id }}"
+                >{{ g.user.messages | length }}</a
+              >
             </h4>
           </li>
           <li class="stat">
             <p class="small">Following</p>
             <h4>
-              <a href="/users/{{ g.user.id }}/following">{{
-                g.user.following | length
-              }}</a>
+              <a href="/users/{{ g.user.id }}/following"
+                >{{ g.user.following | length }}</a
+              >
             </h4>
           </li>
           <li class="stat">
             <p class="small">Followers</p>
             <h4>
-              <a href="/users/{{ g.user.id }}/followers">{{
-                g.user.followers | length
-              }}</a>
+              <a href="/users/{{ g.user.id }}/followers"
+                >{{ g.user.followers | length }}</a
+              >
             </h4>
           </li>
         </ul>
@@ -52,27 +52,26 @@
         </a>
         <div class="message-area">
           <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-          <span class="text-muted">{{
-            msg.timestamp.strftime("%d %B %Y")
-          }}</span>
+          <span class="text-muted"
+            >{{ msg.timestamp.strftime("%d %B %Y") }}</span
+          >
           <p>{{ msg.text }}</p>
 
           {%if msg in g.user.liked_messages %}
-          <form action="/users/stop-unlike/{{ msg.id }}" method="POST">
+          <form action="/users/stop-unlike/{{ msg.id }}" meÎthod="POST">
             <input type="hidden" name="message_id" value="{{ msg.id }}" />
             <button class="btn like_btn btn-info">
               <i class="fas fa-thumbs-up"></i>
             </button>
           </form>
-          {%else%}
 
+          {%else%}
           <form action="/users/{{ user.id }}/likes" method="POST">
             <input type="hidden" name="message_id" value="{{ msg.id }}" />
             <button class="btn like_btn btn-info">
               <i class="far fa-thumbs-up"></i>
             </button>
           </form>
-
           {%endif%}
         </div>
       </li>
