@@ -52,27 +52,25 @@
         </a>
         <div class="message-area">
           <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-          <span class="text-muted"
-            >{{ msg.timestamp.strftime("%d %B %Y") }}</span
-          >
+          <span class="text-muted">{{ msg.timestamp.strftime("%B %d, %Y") }}</span>
           <p>{{ msg.text }}</p>
-
-          {%if msg in g.user.liked_messages %}
-          <form action="/users/stop-unlike/{{ msg.id }}" meÎthod="POST">
-            <input type="hidden" name="message_id" value="{{ msg.id }}" />
-            <button class="btn like_btn btn-info">
-              <i class="fas fa-thumbs-up"></i>
-            </button>
-          </form>
-
-          {%else%}
-          <form action="/users/{{ user.id }}/likes" method="POST">
-            <input type="hidden" name="message_id" value="{{ msg.id }}" />
-            <button class="btn like_btn btn-info">
-              <i class="far fa-thumbs-up"></i>
-            </button>
-          </form>
-          {%endif%}
+          {%if msg.user.id != g.user.id %}
+            {%if msg in g.user.liked_messages %}
+            <form action="/users/stop-unlike/{{ msg.id }}" method="POST">
+              <input type="hidden" name="message_id" value="{{ msg.id }}" />
+              <button class="btn like_btn btn-info">
+                <i class="fas fa-thumbs-up"></i>
+              </button>
+            </form>
+            {%else%}
+            <form action="/users/{{ user.id }}/likes" method="POST">
+              <input type="hidden" name="message_id" value="{{ msg.id }}" />
+              <button class="btn like_btn btn-info">
+                <i class="far fa-thumbs-up"></i>
+              </button>
+            </form>
+            {%endif%}
+          {%endif%}  
         </div>
       </li>
       {% endfor %}

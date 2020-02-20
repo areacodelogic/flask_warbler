@@ -261,22 +261,6 @@ def post_likes(user_id):
         return redirect("/")
 
 
-@app.route('/users/stop-like/<int:message_id>', methods=['POST'])
-def stop_liking(message_id):
-    """Have currently-logged-in-user stop liking a like."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
-    like_post = Like.query.filter(Like.message_id == message_id).first()
-
-    db.session.delete(like_post)
-    db.session.commit()
-
-    return redirect(f"/users/{g.user.id}/likes")
-
-
 @app.route('/users/stop-unlike/<int:message_id>', methods=['POST'])
 def un_liking(message_id):
     """Have currently-logged-in-user stop liking a like."""
