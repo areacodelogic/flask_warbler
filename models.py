@@ -192,7 +192,6 @@ class Like(db.Model):
     message = db.relationship("Message")
 
 
-
 def connect_db(app):
     """Connect this database to provided Flask app.
 
