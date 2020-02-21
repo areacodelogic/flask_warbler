@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, flash, redirect, session, g
 # from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
-from forms import UserAddForm, LoginForm, MessageForm, UpdateProfileForm
+from forms import UserAddForm, LoginForm, MessageForm, UpdateProfileForm, ForgotPWForm
 from models import db, connect_db, User, Message, Like
 
 CURR_USER_KEY = "curr_user"
@@ -120,6 +120,22 @@ def logout():
         flash("Successfully logged Out")
 
     return redirect("/login")
+
+
+@app.route('/forgotpassword', methods=['GET', 'POST'])
+def forgotpassword():
+    '''Handle reset password'''
+
+    form = ForgotPWForm()
+    if form.validate_on_submit():
+        input = form.text.data
+        users = User.query.filter(User.email.match(f"%{input}%")).all()
+        if not users:
+            flash('NO EMAIL ON FILE')
+        else:
+            flash('Email sent')
+
+    return render_template('users/forgotpassword.html', form=form)
 
 
 ##############################################################################
