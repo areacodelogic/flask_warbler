@@ -61,7 +61,7 @@ def signup():
 
     If form not valid, present form.
 
-    If the there already is a user with that username: flash message
+    If there already is a user with that username: flash message
     and re-present form.
     """
 
