@@ -5,7 +5,7 @@ Warbler is a server-side rendered Twitter clone in Flask. This app uses server-s
 
 My partner and I specifically worked on:
 
-* Homepage warbles
+* Homepage warbles(Tweets)
 * User profile page details (location, bio, header image, total liked warbles)
 * User cards that appear on followers, following and list-users pages
 * Warble like/dislike button
