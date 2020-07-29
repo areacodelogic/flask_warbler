@@ -3,7 +3,7 @@
 
 Warbler is a server-side rendered Twitter clone in Flask. This app uses server-side rendering and HTML templates. Warbler features the ability to sign up with a password protected account, edit profile, write posts, like posts, and follow users. Full unit and integration tests written with the Python standard library unittest module. Passwords encrypted and stored in database.
 
-My partner and I specifically worked on:
+My partner and I paired program for the entire project and worked on:
 
 * Homepage warbles(Tweets)
 * User profile page details (location, bio, header image, total liked warbles)
